@@ -1,10 +1,6 @@
 # This Python file uses the following encoding: utf-8
-import os, sys, requests, json
-import requests
-from dotenv import load_dotenv
-
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(BASEDIR, '.env'))
+import os, sys, json
+from botocore.vendored import requests
 
 def get_emoji_count():
   emojis = ['😁', '😂', '😃', '😄', '😅', '😆', '😉', '😊', '😒', '😨', '😡', '😢']
@@ -25,7 +21,7 @@ def get_emoji_count():
   
   for x in emojis:
     parameters = {
-      "access_token": os.getenv("ACCESS_TOKEN")
+      "access_token": "" # add instagram access_token here
     }
   
     response = requests.get("https://api.instagram.com/v1/tags/"+x, params=parameters)
@@ -49,8 +45,6 @@ def response(message, status_code):
 
 def lambda_handler(event, context):
     try:
-        print("value1 = " + event['key1'])
-        print("value2 = " + event['key2'])
         emoji_count = get_emoji_count()
         return response({
           'message': 'Success',
